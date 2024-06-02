@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="default.css" id="theme-style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+   
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    <div id="app"></div>
+
+    <div class="container">
+        <h2>Contact Form</h2>
+        <form id="contact-form">
+            <div>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="date">Date</label>
+                <input type="text" id="date" name="date" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div class="password-strength" id="password-strength"></div>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+   
+        <div class="gallery">
+            <div class="image"><img src="https://www.alfaromeo.co.uk/content/dam/alfa/cross/giulia/shift-to-merchant/engine/hub/my24-mca/AR-Giulia-Merchant-ContentGrid-Engine-03.jpg" alt="Giulia"></div>
+            <div class="image"><img src="https://www.autocar.co.uk/sites/autocar.co.uk/files/alfa-romeo-giulietta.jpg" alt="Giulietta"></div>
+            <div class="image"><img src="https://media.autoexpress.co.uk/image/private/s--X-WVjvBW--/f_auto,t_content-image-full-desktop@1/v1562249150/autoexpress/alfa-mito_frontaction.jpg" alt="Mito"></div>
+        </div>
+        <div class="popup">
+            <span>&times;</span>
+            <img src="C:/Users/KORISNIK/Desktop/images/giulia.jpg">
+        </div>
+
+        <h2>Blog Posts</h2>
+        <div id="blog-posts"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+        <h3>FAQs</h3>
+        <div class="toggle-section">
+            <button class="toggle-button">What is your return policy?</button>
+            <div class="toggle-content">
+                <p>We offer a 30-day return policy on all cars.</p>
+            </div>
+        </div>
+        <div class="toggle-section">
+            <button class="toggle-button">How do I track my order?</button>
+            <div class="toggle-content">
+                <p>You can track your order using the tracking number provided in your confirmation email.</p>
+            </div>
+        </div>
+        <div class="toggle-section">
+            <button class="toggle-button">Do you offer international shipping?</button>
+            <div class="toggle-content">
+                <p>Yes, we offer international shipping to many countries. Please check our shipping policy for more details.</p>
+            </div>
+        </div>
+   
+        <h1>Theme Switcher </h1>
+
+        <div class="theme-buttons">
+            <button onclick="switchTheme('default')">Default Theme</button>
+            <button onclick="switchTheme('dark')">Dark Theme</button>
+            <button onclick="switchTheme('light')">Light Theme</button>
+        </div>
+
+        <div class="font-size-buttons">
+            <button onclick="changeFontSize('small')">Small Font</button>
+            <button onclick="changeFontSize('medium')">Medium Font</button>
+            <button onclick="changeFontSize('large')">Large Font</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/additional-methods.min.js"></script>
+
+
+    <script>
+        document.querySelectorAll('.gallery .image img').forEach(image=>{
+            image.onclick=()=>{
+            document.querySelector('.popup').style.display='flex';
+            document.querySelector('.popup img').src=image.getAttribute('src');
+            }
+
+        });
+
+        document.querySelector('.popup span').onclick=()=>{
+            document.querySelector('.popup').style.display='none';
+
+        }
+        document.querySelectorAll('.toggle-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+
+        function switchTheme(theme) {
+            const themeStyle = document.getElementById('theme-style');
+            themeStyle.href = theme + '.css';
+        }
+
+        function changeFontSize(size) {
+            document.body.className = size + '-font';
+        }
+        $(document).ready(function() {
+  
+    $("#date").datepicker({
+        dateFormat: "yy-mm-dd"
+    });
+
+   
+    $("#password").on("input", function() {
+        var strength = calculatePasswordStrength($(this).val());
+        var strengthText;
+        var strengthColor;
+        
+        if (strength < 2) {
+            strengthText = "Weak";
+            strengthColor = "red";
+        } else if (strength == 2) {
+            strengthText = "Moderate";
+            strengthColor = "orange";
+        } else {
+            strengthText = "Strong";
+            strengthColor = "green";
+        }
+
+        $("#password-strength").html(`<span style="color: ${strengthColor};">${strengthText}</span>`);
+    });
+
+    function calculatePasswordStrength(password) {
+        var strength = 0;
+        if (password.length >= 6) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+        return strength;
+    }
+});
+$(document).ready(function() {
+    /*Form Validation*/
+    $("contact-form").validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 2
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            date: {
+                required: true,
+                dateISO: true
+            },
+            password: {
+                required: true,
+                minlength: 6
+            }
+        },
+        messages: {
+            name: {
+                required: "Please enter your name",
+                minlength: "Your name must consist of at least 2 characters"
+            },
+            email: {
+                required: "Please enter your email",
+                email: "Please enter a valid email address"
+            },
+            date: {
+                required: "Please select a date",
+                dateISO: "Please enter a valid date (YYYY-MM-DD)"
+            },
+            password: {
+                required: "Please provide a password",
+                minlength: "Your password must be at least 6 characters long"
+            }
+        },
+        submitHandler: function(form) {
+            alert("Form submitted successfully!");
+            form.submit();
+        }
+    });
+/*blog post*/    
+});
+$(document).ready(function() {
+    $.ajax({
+        url: 'posts.json', 
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var blogPostsContainer = $('#blog-posts'); 
+            blogPostsContainer.empty();
+            data.forEach(function(post) {
+                var postElement = `
+                    <div class="post">
+                        <h3>${post.title}</h3>
+                        <div class="date">${post.date}</div>
+                        <p>${post.content}</p>
+                    </div>
+                `;
+                blogPostsContainer.append(postElement);
+            });
+        },
+        error: function() {
+            $('#blog-posts').html('<p>There was an error loading the blog posts. Please try again later.</p>');
+        }
+    });
+});
+
+$(document).ready(function() {
+    $("#contact-form").on("submit", function(event) {
+        event.preventDefault();
+
+        const formData = $(this).serialize(); 
+
+      
+        setTimeout(function() {
+            toastr.success('Data has been saved successfully!');
+            $("#contact-form")[0].reset(); 
+            $("#form-response").html("<p>Data has been saved successfully!</p>").show();
+        }, 1000); 
+    });
+});
+
+    </script>
+</body>
+</html>
+
